@@ -8,7 +8,7 @@ class Word
   def choose_word
     database = File.readlines("../google-10000-english-no-swears.txt")
     loop do
-      word = database[rand(database.length)]
+      word = database[rand(database.length)].strip.downcase
       return word if word.length >= 5 && word.length <= 12
     end
   end

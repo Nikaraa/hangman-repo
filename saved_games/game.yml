@@ -1,0 +1,6 @@
+---
+- !ruby/object:Game
+  random_word: themes
+  tries: 2
+  guesses: 'a e i o c s '
+  guessed_words: __e_es

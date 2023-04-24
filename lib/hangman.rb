@@ -14,7 +14,7 @@ class Game
   def intro
     puts "Let's play a hangman game! You can write 'load' to load a file or press enter to start a new game!"
     input = gets.chomp
-    load_game if input == "load"
+    load_file if input == "load"
     play_round
   end
 
@@ -89,7 +89,7 @@ class Game
     exit
   end
 
-  def load_game
+  def load_file
     unless Dir.exists?("../saved_games")
       puts "There are no saved games"
       sleep(1)
@@ -97,7 +97,7 @@ class Game
     end
     games = saved_games
     puts games
-    deserialize(ask_game(games))
+    load_game(ask_game(games))
   end
 
   def ask_game(database)
@@ -114,11 +114,11 @@ class Game
     Dir["../saved_games/*"].map { |f| f.split("/")[-1].split(".")[0] }
   end
 
-  def deserialize(game)
-    yaml = YAML.load_file("../saved_games/#{game}.yml")
-    self.secret_word = yaml[0].secret_word
-    self.guessed_word = yaml[0].guessed_word
-    self.no_of_guesses = yaml[0].no_of_guesses
-    self.guesses = yaml[0].guesses
+  def load_game(game)
+    new_game = YAML.load_file("../saved_games/#{game}.yml", permitted_classes: [Game])
+    self.random_word = new_game[0].random_word
+    self.tries = new_game[0].tries
+    self.guesses = new_game[0].guesses
+    self.guessed_words = new_game[0].guessed_words
   end
 end
